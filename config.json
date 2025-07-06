@@ -1,0 +1,6 @@
+{
+"label":	"FixPlayActivity",
+"icon":	"icon/icon.png",
+"launch":	"launch.sh",
+"description":	"Remove runaway play_activity records"
+}
