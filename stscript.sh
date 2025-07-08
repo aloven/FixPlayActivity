@@ -7,6 +7,14 @@ PYTHONHOME=$sysdir
 PYTHONPATH=/mnt/SDCARD/.tmp_update/lib/parasyte/python2.7:/mnt/SDCARD/.tmp_update/lib/parasyte/python2.7/lib-dynload
 export PYTHONHOME PYTHONPATH
 
+# Read TIMELIMIT from file and export as environment variable
+if [ -f "TIMELIMIT.txt" ]; then
+    TIMELIMIT=$(cat TIMELIMIT.txt)
+    export TIMELIMIT
+else
+    echo "Warning: TIMELIMIT.txt not found.  Script will default to 10800 (3 hours)"
+fi
+
 echo -e "Running dry run python script...\n"
 
 cmd="$sysdir/python2.7 $appdir/sqlite_duplicate_cleanup.py $dbdir/play_activity_db.sqlite play_activity"
