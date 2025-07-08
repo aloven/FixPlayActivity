@@ -13,6 +13,7 @@ Version 1.1 also adds a TIMELIMIT variable, which will delete any `play_time` re
 Place the entire `FixPlayActivity` folder inside the `App` folder in your SD Card.  Then, to the Apps menu on your Miyoo Mini/Plus running OnionOS, and run the FixPlayActivity app.
 
 > [!WARNING]
+> Do not rename the folder.
 > The script will backup your `play_activity_db.sqlite` file inside the same directory before making changes.  You may still want to make a backup if you're unsure; this has only been tested on 4.3.1-1
 
 The script will run.  If problem records are found, you can press the UP key when prompted to run the removal script, or any other key to exit.  A backup `play_activity_db_bak.sqlite` will be created before making changes.
