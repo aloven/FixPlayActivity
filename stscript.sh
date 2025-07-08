@@ -8,8 +8,8 @@ PYTHONPATH=/mnt/SDCARD/.tmp_update/lib/parasyte/python2.7:/mnt/SDCARD/.tmp_updat
 export PYTHONHOME PYTHONPATH
 
 # Read TIMELIMIT from file and export as environment variable
-if [ -f "TIMELIMIT.txt" ]; then
-    TIMELIMIT=$(cat TIMELIMIT.txt)
+if [ -f "$appdir/TIMELIMIT.txt" ]; then
+    TIMELIMIT=$(cat $appdir/TIMELIMIT.txt)
     export TIMELIMIT
 else
     echo "Warning: TIMELIMIT.txt not found.  Script will default to 10800 (3 hours)"
@@ -22,7 +22,7 @@ cmd="$sysdir/python2.7 $appdir/sqlite_duplicate_cleanup.py $dbdir/play_activity_
 output=$($cmd 2>&1 | tee /dev/tty)
 
 case "$output" in
-    *code123*)
+    *"Total records to delete"*)
         echo
         echo "Press UP arrow to continue, any other key to exit..."
         

@@ -113,10 +113,10 @@ def find_and_delete_duplicates(db_path, table_name, time_limit, dry_run=True):
         print("\nSUMMARY:")
         print("Total records to delete: {}".format(len(records_to_delete)))
         print("  - Records with play_time > {}: {}".format(time_limit, len(high_playtime_records)))
-        print("  - Duplicate records (keeping smallest play_time): {}".format(len(records_to_delete) - len(high_playtime_records)))
+        print("  - Duplicates (keeping smallest play_time): {}".format(len(records_to_delete) - len(high_playtime_records)))
         
         if dry_run:
-            print("\n*** DRY RUN MODE - No records were actually deleted ***")
+            print("\n*** DRY RUN MODE - No records were deleted ***")
             print("Run with --execute to perform the actual deletion.")
         else:
             # Perform the deletion
