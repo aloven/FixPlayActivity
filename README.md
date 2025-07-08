@@ -30,3 +30,9 @@ This script addresses this issue by only checking against these anomalies after 
 
 > [!TIP]
 > If you're confident your clock has always been set correctly since day 1, you can set the value in the LASTROW.txt file to '1' and it will run a check against all your history; you can still skip the removal when prompted.
+
+### Script info
+
+OnionOS uses a non-standard installation of Python, specifically 2.7, as of `4.3.1-1`.
+The script launches from the OS, feeds a stepper script into the OnionOS terminal emulator `st` which then runs the `py` scripts with user input in the terminal.
+I used Claude AI to generate most of the Python and `sh` shell scripts here, and modified accordingly, but there may be some extra operations or unnecessary bulk that could be removed.
