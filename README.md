@@ -16,14 +16,17 @@ Place the entire `FixPlayActivity` folder inside the `App` folder in your SD Car
 
 > [!WARNING]
 > Do not rename the folder.
+
+> [!TIP]
 > The script will backup your `play_activity_db.sqlite` file inside the same directory before making changes.  You may still want to make a backup if you're unsure; this has only been tested on 4.3.1-1
 
 The script will run.  If problem records are found, you can press the UP key when prompted to run the removal script, or any other key to exit.  A backup `play_activity_db_bak.sqlite` will be created before making changes.
 
 ## Not a perfect solve
 
-Unfortunately, the best way to scrub bad records would be to look at the `updated_at` times.  They should always increase and outliers shouldn't exist, where the next record has a lower value.  However, since the Miyoo uses the clock to record this value, and the clock is subject to reset if the battery is removed, or the time changes, these sessions might have irregular values and it's impossible to preserve valid playsessions if the outliers are removed.  There is a real change some bad records might still exist in smaller `play_time` units.
+Unfortunately, the best way to scrub bad records would be to look at the `updated_at` times.  They should always increase and outliers shouldn't exist, where the next record has a lower value.  However, since the Miyoo uses the clock to record this value, and the clock is subject to reset if the battery is removed, or the time changes, these sessions might have irregular values and it's impossible to preserve valid playsessions if the outliers are removed.  There is a real chance some bad records might still exist in smaller `play_time` units.
 
 This script addresses this issue by only checking against these anomalies after it's first run, since we assume that there may be lots of out-of-order records prior to establishing the RTC or clock setup.
 
-If you're confident your clock has always been set correctly since day 1, you can set the value in the LASTROW.txt file to '1' and it will run a check against all your history; you can still skip the removal when prompted.
+> [!TIP]
+> If you're confident your clock has always been set correctly since day 1, you can set the value in the LASTROW.txt file to '1' and it will run a check against all your history; you can still skip the removal when prompted.
