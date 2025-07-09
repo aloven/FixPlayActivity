@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 import sqlite3
 import sys
@@ -21,8 +20,10 @@ def connect_to_db(db_path):
 
 def write_last_row(row_number):
     """Write the last processed row number to LASTROW.txt."""
+    appdir = os.environ.get('APPDIR')
+    lastrowfile = appdir+"/LASTROW.txt"
     try:
-        with open("LASTROW.txt", "w") as f:
+        with open(lastrowfile, "w") as f:
             f.write(str(row_number))
     except Exception as e:
         print("Warning: Could not write to LASTROW.txt: {}".format(e))

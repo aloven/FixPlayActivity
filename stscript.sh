@@ -3,9 +3,12 @@
 dbdir=/mnt/SDCARD/Saves/CurrentProfile/play_activity
 appdir=/mnt/SDCARD/App/FixPlayActivity
 sysdir="/mnt/SDCARD/.tmp_update/bin/parasyte"
+pythonbin="/python2.7"
+pythonrun=$sysdir$pythonbin
 PYTHONHOME=$sysdir
+APPDIR=$appdir
 PYTHONPATH=/mnt/SDCARD/.tmp_update/lib/parasyte/python2.7:/mnt/SDCARD/.tmp_update/lib/parasyte/python2.7/lib-dynload
-export PYTHONHOME PYTHONPATH
+export PYTHONHOME PYTHONPATH APPDIR
 
 # Check for LASTROW file and export as environment variable.  Run anomaly script if file exists.
 if [ -f "$appdir/LASTROW.txt" ]; then
@@ -13,15 +16,20 @@ if [ -f "$appdir/LASTROW.txt" ]; then
     export LASTROW
     # run the anomaly detection script
     echo -e "*** Running anomaly detection script (DRY RUN)...\n"
-    cmd="python2.7 $appdir/anomaly_detection.py $dbdir/play_activity_db.sqlite play_activity"
+    cmd="$sysdir/python2.7 $appdir/anomaly_detection.py $dbdir/play_activity_db.sqlite play_activity"
     output=$($cmd 2>&1 | tee /dev/tty)
 
     case "$output" in
         *"bad record(s)"*)
+            
             echo
-            echo "-=-=- Press UP arrow to purge anomaly records, any other key to skip -=-=-"
-            echo "!! This may remove legitimate records if you have not run this script before, and/or changed the Miyoo clock"
-            echo "!! If you are unsure, you can skip this and proceed to the duplicate detection step which will work for most cases."
+            echo " * May remove legitimate records if you have not run"
+            echo " * this script before and/or changed the Miyoo clock"
+            echo
+            echo " * If you are unsure, you can skip this and"
+            echo " * proceed to next cycle which will attempt a fix."
+            echo
+            echo "-=-=- Press UP to execute, other key skips -=-=-"
             
             # Save current terminal settings
             old_stty=$(stty -g)
@@ -78,14 +86,14 @@ fi
 
 echo -e "*** Running duplicate detection script (DRY RUN)...\n"
 
-cmd="python2.7 $appdir/sqlite_duplicate_cleanup.py $dbdir/play_activity_db.sqlite play_activity"
+cmd="$pythonrun $appdir/sqlite_duplicate_cleanup.py $dbdir/play_activity_db.sqlite play_activity"
 
 output=$($cmd 2>&1 | tee /dev/tty)
 
 case "$output" in
     *"Total records to delete"*)
         echo
-        echo "-=-=- Press UP arrow to continue, any other key to exit -=-=-"
+        echo "-=-=- Press UP to delete, other key exits -=-=-"
         
         # Save current terminal settings
         old_stty=$(stty -g)
@@ -114,7 +122,7 @@ case "$output" in
                 fi
                 
                 echo "*** Running duplicate detection script (EXECUTE)...\n"
-                python2.7 $appdir/sqlite_duplicate_cleanup.py $dbdir/play_activity_db.sqlite play_activity --execute
+                $pythonrun $appdir/sqlite_duplicate_cleanup.py $dbdir/play_activity_db.sqlite play_activity --execute
             else
                 # Restore terminal settings
                 stty $old_stty
@@ -134,5 +142,5 @@ case "$output" in
         ;;
 esac
 
-read -n 1 -s -r -p "Press any key to exit..."
+read -n 1 -s -r -p "-=-=- Press any key to exit -=-=-"
 echo

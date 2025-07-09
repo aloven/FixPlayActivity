@@ -210,18 +210,19 @@ def main():
         bad_records = find_bad_records(conn, args.table_name, pk_column, start_row)
         
         if not bad_records:
-            print("✓ No bad records found. All updated_at values are in sequential order.")
+            print("=== No bad records found. All updated_at values are in sequential order.")
         else:
-            print("Found {} bad record(s):".format(len(bad_records)))
-            print("-" * 80)
+            
             
             # Display bad records
             for pk_value, updated_at in bad_records:
                 record_details = get_record_details(conn, args.table_name, pk_column, pk_value)
-                print("Record {}={}: updated_at={} ({})".format(
-                    pk_column, pk_value, updated_at, format_timestamp(updated_at)
+                print("rowid {}: {} ({})".format(
+                    pk_value, updated_at, format_timestamp(updated_at)
                 ))
-            
+
+            print("   ^^^^^   Found {} bad record(s)   ^^^^^".format(len(bad_records)))
+
             # Execute removal if requested
             if args.execute:
                 print("Removing bad records...")
